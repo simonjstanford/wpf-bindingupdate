@@ -1,0 +1,41 @@
+﻿<Window x:Class="BindingUpdatedAnimation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BindingUpdatedAnimation"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LookAtMe" TargetType="TextBlock">
+                <Setter Property="Background" Value="Transparent"/>
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)"
+                                                From="Transparent" To="Magenta" FillBehavior="Stop"
+                                                BeginTime="0:0:0" Duration="0:0:0.3"/>
+                                    <ColorAnimation Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)"
+                                                From="Magenta" To="Transparent"
+                                                BeginTime="0:0:0.3" Duration="0:0:1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <StackPanel Margin="10">
+        <TextBlock Text="{Binding SomeText, NotifyOnTargetUpdated=True}"
+                   Style="{StaticResource LookAtMe}"/>
+        
+        <Button Content="Do Something"
+                Margin="0,10,0,0" HorizontalAlignment="Center"
+                Click="btnDoSomething_Click"/>
+    </StackPanel>
+</Window>
